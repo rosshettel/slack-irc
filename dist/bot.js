@@ -312,3 +312,4 @@ var Bot = function () {
 }();
 
 exports.default = Bot;
+module.exports = exports['default'];

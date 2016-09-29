@@ -66,3 +66,4 @@ function run() {
 }
 
 exports.default = run;
+module.exports = exports['default'];

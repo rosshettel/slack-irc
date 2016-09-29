@@ -30,3 +30,4 @@ if (!module.parent) {
 }
 
 exports.default = _helpers.createBots;
+module.exports = exports['default'];
