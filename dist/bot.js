@@ -144,6 +144,10 @@ var Bot = function () {
         }
       });
 
+      this.ircClient.on('topic', function (channel, topic, nick, message) {
+        _this2.setTopic(channel, topic);
+      });
+
       this.ircClient.on('message', this.sendToSlack.bind(this));
 
       this.ircClient.on('notice', function (author, to, text) {
@@ -256,6 +260,20 @@ var Bot = function () {
         }
         _winston2.default.debug('Sending message to IRC', channelName, text);
         this.ircClient.say(ircChannel, text);
+      }
+    }
+  }, {
+    key: 'setTopic',
+    value: function setTopic(channel, topic) {
+      var slackChannelName = this.invertedMapping[channel.toLowerCase()];
+      if (slackChannelName) {
+        var dataStore = this.slack.rtm.dataStore;
+
+        var name = slackChannelName.replace(/^#/, '');
+        var slackChannel = dataStore.getChannelOrGroupByName(name);
+
+        _winston2.default.debug('Setting channel topic', channel, '->', slackChannelName, ':', topic);
+        this.slack.web.channels.setTopic(slackChannel.id, topic);
       }
     }
   }, {
