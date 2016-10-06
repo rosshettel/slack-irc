@@ -266,14 +266,15 @@ var Bot = function () {
     key: 'setTopic',
     value: function setTopic(channel, topic) {
       var slackChannelName = this.invertedMapping[channel.toLowerCase()];
+      var formattedTopic = topic.substring(0, 247) + '...';
       if (slackChannelName) {
         var dataStore = this.slack.rtm.dataStore;
 
         var name = slackChannelName.replace(/^#/, '');
         var slackChannel = dataStore.getChannelOrGroupByName(name);
 
-        _winston2.default.debug('Setting channel topic', channel, '->', slackChannelName, ':', topic);
-        this.slack.web.channels.setTopic(slackChannel.id, topic);
+        _winston2.default.debug('Setting channel topic', slackChannel.id, '->', slackChannelName, ':', topic);
+        this.slack.web.groups.setTopic(slackChannel.id, formattedTopic);
       }
     }
   }, {
